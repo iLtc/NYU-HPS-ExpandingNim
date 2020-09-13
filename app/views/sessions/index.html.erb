@@ -1,4 +1,7 @@
 <h1>All Sessions</h1>
+
+<%= link_to 'New Session', new_session_path %>
+<%= link_to 'Join Session', join_session_path %>
  
 <table>
   <tr>
@@ -15,11 +18,16 @@
       <td><%= session.status %></td>
       <td><%= session.player_a.name %></td>
       <td>
-        <% if session.player_b -%>
+        <% if !session.player_b.nil? -%>
           <%= session.player_b.name %>
         <% end -%>
       </td>
-      <td></td>
+      <td>
+        <% if session.player_b.nil? -%>
+          <%= link_to 'Join', controller: "sessions", action: "join", id: session.id %> | 
+        <% end -%>
+        <%= link_to 'View', session %>
+      </td>
     </tr>
   <% end %>
 </table>

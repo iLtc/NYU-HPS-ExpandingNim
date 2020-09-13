@@ -1,0 +1,17 @@
+<h1>Join Session</h1>
+ 
+<%= form_with url: join_session_post_url do |form| %>
+  <p>
+    <%= form.label :id, "Session ID" %><br>
+    <%= form.text_field :id, value: @id %>
+  </p>
+
+  <p>
+    <%= form.label :name, "Player B's Name" %><br>
+    <%= form.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= form.submit "Join Session" %>
+  </p>
+<% end %>
