@@ -1,0 +1,25 @@
+<h1>All Sessions</h1>
+ 
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Status</th>
+    <th>Player A</th>
+    <th>Player B</th>
+    <th>Actions</th>
+  </tr>
+ 
+  <% @sessions.each do |session| %>
+    <tr>
+      <td><%= session.id %></td>
+      <td><%= session.status %></td>
+      <td><%= session.player_a.name %></td>
+      <td>
+        <% if session.player_b -%>
+          <%= session.player_b.name %>
+        <% end -%>
+      </td>
+      <td></td>
+    </tr>
+  <% end %>
+</table>
