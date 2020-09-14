@@ -38,6 +38,7 @@ class SessionsController < ApplicationController
       format.json do
         render json: {
           status: "success",
+          game_status: session.status,
           session_id: session.id,
           token: player_a.token
         }.to_json
@@ -74,6 +75,7 @@ class SessionsController < ApplicationController
       format.json do
         render json: {
           status: "success",
+          game_status: session.status,
           session_id: session.id,
           token: player_b.token
         }.to_json
@@ -119,7 +121,7 @@ class SessionsController < ApplicationController
         @your_turn = false
     end
     
-    if @current_player.start_time.nil?
+    if @your_turn and @current_player.start_time.nil?
       @current_player.start_time = DateTime.now
       @current_player.save
       puts @current_player.start_time

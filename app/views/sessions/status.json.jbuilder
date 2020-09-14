@@ -1,4 +1,5 @@
 json.status "success"
+json.game_status @session.status
 json.your_turn @your_turn
 
 if @your_turn

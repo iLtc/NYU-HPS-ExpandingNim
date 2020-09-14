@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>NYUHpsExpandingnim</title>
+    <title>NYU HPS Expanding Nim</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <script>
+      function auto_refresh() {
+        var time = 3;
+
+        setInterval(() => {
+          if (time == 0) {
+            window.location.reload();
+            time = 3;
+          } else {
+            document.getElementById("auth-refresh-msg").innerHTML = "This page will refresh in " + time + " seconds ...";
+          
+            time -= 1;
+          }
+        }, 1000);
+      }
+    </script>
   </head>
 
   <body>
     <%= yield %>
+    <p id="auth-refresh-msg"></p>
   </body>
 </html>

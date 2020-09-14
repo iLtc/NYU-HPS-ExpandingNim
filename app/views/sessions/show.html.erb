@@ -19,3 +19,7 @@
     </tr>
   <% end %>
 </table>
+
+<% if @session.status != "end" -%>
+  <script>auto_refresh();</script>
+<% end -%>

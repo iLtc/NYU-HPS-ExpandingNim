@@ -31,3 +31,6 @@
   <p>Status: <%= @session.status_message %></p>
 <% end -%>
  
+<% if @session.status != "end" and !@your_turn -%>
+  <script>auto_refresh();</script>
+<% end -%>

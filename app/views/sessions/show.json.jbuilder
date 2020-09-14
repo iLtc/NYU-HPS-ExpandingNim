@@ -1,4 +1,5 @@
 json.status "success"
+json.game_status @session.status
 
 json.moves @session.moves do |move|
   json.player move.user.name
