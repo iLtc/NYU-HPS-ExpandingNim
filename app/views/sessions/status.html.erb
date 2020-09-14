@@ -1,0 +1,33 @@
+<h1>Session Status</h1>
+
+<% if @you_turn -%>
+  <p>It's your turn now. Please make a move.</p>
+  <p>Stones Left: <%= @session.left_stones %></p>
+  <p>Reset Imposed: <%= @session.reset %></p>
+  <p>Current Max: <%= @session.current_max %></p>
+  <p>Accept Value Range: 1 to <%= @session.accept_max_stones %></p>
+  <p>Your Start Time: <%= @current_player.start_time %></p>
+  <p>Your Time Left: <%= @current_player.left_time - (DateTime.now.to_i - @current_player.start_time.to_i) %> s</p>
+
+  <%= form_with url: session_move_path(@session, token: @current_player.token) do |form| %>
+    <p>
+      <%= form.label :stones, "# of Stones to Remove" %><br>
+      <%= form.text_field :stones %>
+    </p>
+    <p>
+      <%= form.label :reset, "Reset" %><br>
+      <%= form.radio_button :reset, 'yes' %> 
+      <%= form.label :reset_yes, 'Yes' %>
+      <%= form.radio_button :reset, 'no', :checked => true %>
+      <%= form.label :reset_no, 'No' %>
+    </p>
+
+    <p>
+      <%= form.submit "Submit" %>
+    </p>
+  <% end %>
+<% else -%>
+  <p>It's not your turn yet. Please wait for other player. Please don't refresh this page too frequently.</p>
+  <p>Status: <%= @session.status_message %></p>
+<% end -%>
+ 

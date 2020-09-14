@@ -15,7 +15,7 @@
   <% @sessions.each do |session| %>
     <tr>
       <td><%= session.id %></td>
-      <td><%= session.status %></td>
+      <td><%= session.status_message %></td>
       <td><%= session.player_a.name %></td>
       <td>
         <% if !session.player_b.nil? -%>
@@ -24,7 +24,7 @@
       </td>
       <td>
         <% if session.player_b.nil? -%>
-          <%= link_to 'Join', controller: "sessions", action: "join", id: session.id %> | 
+          <%= link_to 'Join', session_join_path(session) %> | 
         <% end -%>
         <%= link_to 'View', session %>
       </td>

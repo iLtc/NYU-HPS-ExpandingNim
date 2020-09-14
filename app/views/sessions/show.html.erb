@@ -1,0 +1,19 @@
+<h1>Session History</h1>
+ 
+<table>
+  <tr>
+    <th>Player</th>
+    <th>Time</th>
+    <th>Stones</th>
+    <th>Reset</th>
+  </tr>
+ 
+  <% @session.moves.each do |move| %>
+    <tr>
+      <td><%= move.user.name %></td>
+      <td><%= move.end_time.to_i - move.start_time.to_i %> s</td>
+      <td><%= move.stones_removed %></td>
+      <td><%= move.reset %></td>
+    </tr>
+  <% end %>
+</table>

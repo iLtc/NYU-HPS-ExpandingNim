@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  session: one
+  start_time: 2020-09-13 20:32:56
+  end_time: 2020-09-13 20:32:56
+  stones_before: 1
+  stones_removed: 1
+  stones_after: 1
+  reset_before: 1
+  reset: false
+  reset_after: 1
+
+two:
+  user: two
+  session: two
+  start_time: 2020-09-13 20:32:56
+  end_time: 2020-09-13 20:32:56
+  stones_before: 1
+  stones_removed: 1
+  stones_after: 1
+  reset_before: 1
+  reset: false
+  reset_after: 1

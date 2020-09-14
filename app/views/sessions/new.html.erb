@@ -2,6 +2,10 @@
  
 <%= form_with url: sessions_path do |form| %>
   <p>
+    <%= form.label :stones, "# of Stones" %><br>
+    <%= form.text_field :stones, value: 100 %>
+  </p>
+  <p>
     <%= form.label :name, "Player A's Name" %><br>
     <%= form.text_field :name %>
   </p>
