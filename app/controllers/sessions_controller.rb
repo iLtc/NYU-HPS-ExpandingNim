@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token
   
   def index
-    @sessions = Session.all
+    @sessions = Session.order(id: :desc)
   end
     
   def new
@@ -305,7 +305,7 @@ class SessionsController < ApplicationController
     
     if session.left_stones <= 0
       session.status = "end"
-      session.winner = (current_player == session.player_a) ? "1" : "2"
+      session.winner = (current_player == session.player_a) ? 1 : 2
     else
       session.status = (current_player == session.player_a) ? "wait_for_b_move" : "wait_for_a_move"
     end

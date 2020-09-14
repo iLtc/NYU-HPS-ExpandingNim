@@ -33,8 +33,13 @@
     </p>
   <% end %>
 <% else -%>
-  <p>It's not your turn yet. Please wait for other player. Please don't refresh this page too frequently.</p>
-  <p>Status: <%= @session.status_message %></p>
+  <% if @session.status == "end" -%>
+    <p>Game Over!</p>
+    <p>Winner: <% if @session.winner == 1 -%><%= @session.player_a.name %><% else -%><%= @session.player_b.name %><% end -%></p>
+  <% else -%>
+    <p>It's not your turn yet. Please wait for other player. Please don't refresh this page too frequently.</p>
+    <p>Status: <%= @session.status_message %></p>
+  <% end -%>
 <% end -%>
  
 <% if @session.status != "end" and !@your_turn -%>
