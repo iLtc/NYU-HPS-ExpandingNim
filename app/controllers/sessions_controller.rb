@@ -1,6 +1,8 @@
 require 'securerandom'
 
 class SessionsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  
   def index
     @sessions = Session.all
   end
@@ -28,7 +30,19 @@ class SessionsController < ApplicationController
     player_a.save
     session.save
     
-    redirect_to session_status_path(session, token: player_a.token)
+    respond_to do |format|
+      format.html do
+        redirect_to session_status_path(session, token: player_a.token)
+      end
+      
+      format.json do
+        render json: {
+          status: "success",
+          session_id: session.id,
+          token: player_a.token
+        }.to_json
+      end
+    end
   end
   
   def join
@@ -52,7 +66,19 @@ class SessionsController < ApplicationController
     
     session.save
     
-    redirect_to session_status_path(session, token: player_b.token)
+    respond_to do |format|
+      format.html do
+        redirect_to session_status_path(session, token: player_b.token)
+      end
+      
+      format.json do
+        render json: {
+          status: "success",
+          session_id: session.id,
+          token: player_b.token
+        }.to_json
+      end
+    end
   end
   
   def show
@@ -75,22 +101,22 @@ class SessionsController < ApplicationController
       
     end
     
-    @you_turn = false
+    @your_turn = false
     @message = @session.status_message
     
     case @session.status
       when "wait_for_b_join", "end"
-        @you_turn = false
+        @your_turn = false
       when "wait_for_a_move"
         if @current_player == @session.player_a
-          @you_turn = true
+          @your_turn = true
         end
       when "wait_for_b_move"
         if @current_player == @session.player_b
-          @you_turn = true
+          @your_turn = true
         end
       else
-        @you_turn = false
+        @your_turn = false
     end
     
     if @current_player.start_time.nil?
@@ -119,25 +145,25 @@ class SessionsController < ApplicationController
       
     end
     
-    you_turn = false
+    your_turn = false
     message = session.status_message
     
     case session.status
       when "wait_for_b_join", "end"
-        you_turn = false
+        your_turn = false
       when "wait_for_a_move"
         if current_player == session.player_a
-          you_turn = true
+          your_turn = true
         end
       when "wait_for_b_move"
         if current_player == session.player_b
-          you_turn = true
+          your_turn = true
         end
       else
-        you_turn = false
+        your_turn = false
     end
     
-    if !you_turn
+    if !your_turn
       # TODO: Error
     end
     
@@ -175,7 +201,17 @@ class SessionsController < ApplicationController
     current_player.save
     move.save
     
-    redirect_to session_status_path(session, token: current_player.token)
+    respond_to do |format|
+      format.html do
+        redirect_to session_status_path(session, token: current_player.token)
+      end
+      
+      format.json do
+        render json: {
+          status: "success"
+        }.to_json
+      end
+    end
   end
   
   def verify_session_and_player

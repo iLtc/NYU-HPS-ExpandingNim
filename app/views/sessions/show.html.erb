@@ -4,7 +4,8 @@
   <tr>
     <th>Player</th>
     <th>Time</th>
-    <th>Stones</th>
+    <th>Stones Removed</th>
+    <th>Stones Left</th>
     <th>Reset</th>
   </tr>
  
@@ -13,6 +14,7 @@
       <td><%= move.user.name %></td>
       <td><%= move.end_time.to_i - move.start_time.to_i %> s</td>
       <td><%= move.stones_removed %></td>
+      <td><%= move.stones_after %></td>
       <td><%= move.reset %></td>
     </tr>
   <% end %>
