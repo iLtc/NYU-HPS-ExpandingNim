@@ -162,7 +162,7 @@ if __name__ == '__main__':
         if not status["your_turn"]:
             print("Will check again in 3 seconds ...")
             
-            time.sleep(1)
+            time.sleep(3)
             
         else:
             make_move(base_url, session_id, token, auto_play, status)
