@@ -3,6 +3,10 @@ class Session < ApplicationRecord
   belongs_to :player_b, class_name: 'User', optional: true
   has_many :moves
   
+  validates :initial_stones, presence: true
+  validates :initial_stones, inclusion: { in: 1..1000,
+    message: "is not between 1 and 1000" }
+  
   def status_message
     return case self.status
       when "wait_for_b_join"

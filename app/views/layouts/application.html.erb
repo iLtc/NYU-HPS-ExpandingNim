@@ -4,9 +4,12 @@
     <title>NYU HPS Expanding Nim</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <style>
+      th, td {
+        border: 1px solid lightgray;
+      }
+    </style>
     
     <script>
       function auto_refresh() {
@@ -27,6 +30,21 @@
   </head>
 
   <body>
+    <% flash.each do |type, msg| %>
+      <div>
+        <p><strong><%= type.upcase %>:</strong> <%= msg %></p>
+      </div>
+    <% end %>
+    <% if @errors -%>
+    <ul>
+      <% @errors.each do |key, msgs| %>
+        <% msgs.each do |msg| %>
+          <li><%= key %> <%= msg %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% end -%>
+    
     <%= yield %>
     <p id="auth-refresh-msg"></p>
   </body>
