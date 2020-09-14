@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_11_032656) do
+ActiveRecord::Schema.define(version: 2020_09_14_003256) do
+
+  create_table "moves", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "session_id", null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer "stones_before"
+    t.integer "stones_removed"
+    t.integer "stones_after"
+    t.integer "reset_before"
+    t.boolean "reset"
+    t.integer "reset_after"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["session_id"], name: "index_moves_on_session_id"
+    t.index ["user_id"], name: "index_moves_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.string "status"
+    t.integer "initial_stones"
+    t.integer "left_stones"
+    t.integer "current_max"
+    t.boolean "reset"
+    t.integer "accept_max_stones"
+    t.integer "winner"
     t.integer "player_a_id"
     t.integer "player_b_id"
     t.datetime "created_at", precision: 6, null: false
@@ -25,8 +48,13 @@ ActiveRecord::Schema.define(version: 2020_09_11_032656) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "token"
+    t.integer "left_resets"
+    t.integer "left_time"
+    t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "moves", "sessions"
+  add_foreign_key "moves", "users"
 end
