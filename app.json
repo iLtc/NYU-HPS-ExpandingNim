@@ -5,5 +5,5 @@
   "success_url": "/sessions",
   "scripts": {
     "postdeploy": "rails db:migrate"
-  },
+  }
 }
