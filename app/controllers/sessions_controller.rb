@@ -77,7 +77,8 @@ class SessionsController < ApplicationController
           status: "success",
           game_status: session.status,
           session_id: session.id,
-          token: player_b.token
+          token: player_b.token,
+          init_stones: session.initial_stones
         }.to_json
       end
     end
