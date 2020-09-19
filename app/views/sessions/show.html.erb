@@ -9,7 +9,7 @@
     <th>Reset</th>
   </tr>
  
-  <% @session.moves.each do |move| %>
+  <% @session.moves.order(id: :asc).each do |move| %>
     <tr>
       <td><%= move.user.name %></td>
       <td><%= move.end_time.to_i - move.start_time.to_i %> s</td>
