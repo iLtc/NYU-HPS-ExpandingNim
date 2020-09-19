@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_003256) do
+ActiveRecord::Schema.define(version: 2020_09_19_053623) do
 
   create_table "moves", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_003256) do
     t.string "name"
     t.string "token"
     t.integer "left_resets"
-    t.integer "left_time"
+    t.float "left_time"
     t.datetime "start_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

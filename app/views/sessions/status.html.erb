@@ -13,7 +13,7 @@
   <p>Accept Value Range: 1 to <%= @session.accept_max_stones %></p>
   <p>Reset Left: <%= @current_player.left_resets %></p>
   <p>Your Start Time: <%= @current_player.start_time %></p>
-  <p>Your Time Left: <%= @current_player.left_time - (DateTime.now.to_i - @current_player.start_time.to_i) %> s</p>
+  <p>Your Time Left: <%= (@current_player.left_time - (DateTime.now.to_f - @current_player.start_time.to_f)).round %> s</p>
 
   <%= form_with url: session_move_path(@session, token: @current_player.token) do |form| %>
     <p>

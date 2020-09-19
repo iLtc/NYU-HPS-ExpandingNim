@@ -10,7 +10,7 @@ if @your_turn
   json.accept_max_value @session.accept_max_stones
   json.reset_left @current_player.left_resets
   json.start_time @current_player.start_time
-  json.time_left @current_player.left_time - (DateTime.now.to_i - @current_player.start_time.to_i)
+  json.time_left (@current_player.left_time - (DateTime.now.to_f - @current_player.start_time.to_f)).round
 else
   if @session.status == "end"
     json.message "Game Over! Winner: " + ((@session.winner == 1) ? @session.player_a.name : @session.player_b.name)

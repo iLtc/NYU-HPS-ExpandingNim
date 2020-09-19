@@ -294,7 +294,7 @@ class SessionsController < ApplicationController
     move.reset_after = move.reset_before - (move.reset ? 1 : 0)
     
     current_player.left_resets = move.reset_after
-    current_player.left_time -= move.end_time.to_i - move.start_time.to_i
+    current_player.left_time -= move.end_time.to_f - move.start_time.to_f
     current_player.start_time = nil
     current_player.moves << move
     
