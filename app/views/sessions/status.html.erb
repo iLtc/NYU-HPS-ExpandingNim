@@ -1,4 +1,9 @@
 <h1>Session Status</h1>
+<p>
+  <%= link_to 'All Sessions', sessions_path %>
+</p>
+<p>Session ID: <%= @session.id %></p>
+<p>Your Token: <%= @current_player.token %></p>
 
 <% if @your_turn -%>
   <p>It's your turn now. Please make a move.</p>
@@ -6,6 +11,7 @@
   <p>Reset Imposed: <%= @session.reset %></p>
   <p>Current Max: <%= @session.current_max %></p>
   <p>Accept Value Range: 1 to <%= @session.accept_max_stones %></p>
+  <p>Reset Left: <%= @current_player.left_resets %></p>
   <p>Your Start Time: <%= @current_player.start_time %></p>
   <p>Your Time Left: <%= @current_player.left_time - (DateTime.now.to_i - @current_player.start_time.to_i) %> s</p>
 
@@ -27,8 +33,13 @@
     </p>
   <% end %>
 <% else -%>
-  <p>It's not your turn yet. Please wait for other player. Please don't refresh this page too frequently.</p>
-  <p>Status: <%= @session.status_message %></p>
+  <% if @session.status == "end" -%>
+    <p>Game Over!</p>
+    <p>Winner: <% if @session.winner == 1 -%><%= @session.player_a.name %><% else -%><%= @session.player_b.name %><% end -%></p>
+  <% else -%>
+    <p>It's not your turn yet. Please wait for other player. Please don't refresh this page too frequently.</p>
+    <p>Status: <%= @session.status_message %></p>
+  <% end -%>
 <% end -%>
  
 <% if @session.status != "end" and !@your_turn -%>

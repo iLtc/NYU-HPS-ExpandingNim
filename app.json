@@ -1,0 +1,9 @@
+{
+  "name": "NYU HPS Expanding Nim Server",
+  "repository": "https://github.com/iLtc/NYU-HPS-ExpandingNim",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "success_url": "/sessions",
+  "scripts": {
+    "postdeploy": "rails db:migrate"
+  }
+}
