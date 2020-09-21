@@ -172,6 +172,8 @@ class SessionsController < ApplicationController
   end
   
   def show
+    response.headers["X-FRAME-OPTIONS"] = 'ALLOWALL'
+
     begin
       @session = Session.find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
