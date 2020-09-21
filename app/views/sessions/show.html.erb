@@ -2,6 +2,9 @@
 <p>Session ID: <%= @session.id %></p>
 <p>current_max: <%= @session.current_max %></p>
 <p>Status: <%= @session.status_message %></p>
+<% if @session.status == "end" -%>
+  <p>Winner: <% if @session.winner == 1 -%><%= @session.player_a.name %><% else -%><%= @session.player_b.name %><% end -%></p>
+<% end -%>
 
 <% unless @session.player_a.nil? -%>
   <hr>
