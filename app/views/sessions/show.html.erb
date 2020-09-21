@@ -1,4 +1,37 @@
 <h1>Session History</h1>
+<p>Session ID: <%= @session.id %></p>
+<p>current_max: <%= @session.current_max %></p>
+<p>Status: <%= @session.status_message %></p>
+
+<% unless @session.player_a.nil? -%>
+  <hr>
+  <p>Player A: <%=  @session.player_a.name %></p>
+  <p>
+    Time Left:
+    <% if @session.player_a.start_time.nil? -%>
+      <%=  @session.player_a.left_time.round  %>
+    <% else -%>
+      <%= [(@session.player_a.left_time - (DateTime.now.to_f - @session.player_a.start_time.to_f)).round, 0].max %>
+    <% end -%> s
+  </p>
+  <p>Reset Left: <%=  @session.player_a.left_resets  %></p>
+
+<% end -%>
+
+<% unless @session.player_b.nil? -%>
+  <hr>
+  <p>Player B: <%=  @session.player_b.name %></p>
+  <p>
+    Time Left:
+    <% if @session.player_b.start_time.nil? -%>
+      <%=  @session.player_b.left_time.round  %>
+    <% else -%>
+      <%= [(@session.player_b.left_time - (DateTime.now.to_f - @session.player_b.start_time.to_f)).round, 0].max %>
+    <% end -%> s
+  </p>
+  <p>Reset Left: <%=  @session.player_b.left_resets  %></p>
+
+<% end -%>
  
 <table>
   <tr>
@@ -9,7 +42,7 @@
     <th>Reset</th>
   </tr>
  
-  <% @session.moves.order(id: :asc).each do |move| %>
+  <% @session.moves.order(id: :desc).each do |move| %>
     <tr>
       <td><%= move.user.name %></td>
       <td><%= (move.end_time.to_f - move.start_time.to_f).round(3) %> s</td>
