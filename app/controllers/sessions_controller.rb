@@ -185,6 +185,11 @@ class SessionsController < ApplicationController
       
       return
     end
+
+    if !@session.player_a.nil? and !@session.player_b.nil?
+      check_time(@session.player_a, @session)
+      check_time(@session.player_b, @session)
+    end
   end
   
   def status
@@ -192,6 +197,12 @@ class SessionsController < ApplicationController
     
     unless valid
       return
+    end
+
+    if !@session.player_a.nil? and !@session.player_b.nil?
+      if !check_time(@session.player_a, @session) || !check_time(@session.player_b, @session)
+        @your_turn = false
+      end
     end
     
     @message = @session.status_message
@@ -208,6 +219,12 @@ class SessionsController < ApplicationController
     
     unless valid
       return
+    end
+
+    if !session.player_a.nil? and !session.player_b.nil?
+      if !check_time(session.player_a, session) || !check_time(session.player_b, session)
+        your_turn = false
+      end
     end
     
     unless your_turn
@@ -386,5 +403,19 @@ class SessionsController < ApplicationController
     end
     
     return true, session, current_player, your_turn
+  end
+
+  def check_time(player, session)
+    unless player.start_time.nil?
+      if player.left_time - (DateTime.now.to_f - player.start_time.to_f) <= 0
+        session.status = "end"
+        session.winner = (player == session.player_a) ? 2 : 1
+        session.save
+
+        return false
+      end
+    end
+
+    return true
   end
 end
