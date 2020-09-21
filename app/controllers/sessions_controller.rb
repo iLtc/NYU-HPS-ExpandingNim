@@ -262,6 +262,10 @@ class SessionsController < ApplicationController
     end
     
     if params[:stones].to_i < 1 || params[:stones].to_i > session.accept_max_stones
+      session.status = "end"
+      session.winner = (current_player == session.player_a) ? 2 : 1
+      session.save
+
       respond_to do |format|
         format.html do
           redirect_to session_status_path(session, token: current_player.token), alert: "# of Stones to Remove has to be brtween 1 and #{session.accept_max_stones}."
@@ -279,6 +283,10 @@ class SessionsController < ApplicationController
     end
     
     if params[:reset] == 'yes' and current_player.left_resets == 0
+      session.status = "end"
+      session.winner = (current_player == session.player_a) ? 2 : 1
+      session.save
+
       respond_to do |format|
         format.html do
           redirect_to session_status_path(session, token: current_player.token), alert: "You have used all your resets."
