@@ -11,75 +11,53 @@ class SessionsController < ApplicationController
   end
   
   def create
-    session = Session.new
-    session.status = "wait_for_b_join"
-    session.initial_stones = params[:stones]
-    session.left_stones = params[:stones]
-    session.current_max = 0
-    session.reset = false
-    session.accept_max_stones = [3, session.initial_stones].min
-    
-    player_a = User.new
-    player_a.name = params[:name]
-    player_a.token = SecureRandom.hex(16)
-    player_a.left_resets = 4
-    player_a.left_time = 120
-    player_a.player_a_session = session
-    
-    if !player_a.save
+    @session = Session.new
+    @session.status = "wait_for_a_join"
+    @session.initial_stones = params[:stones]
+    @session.left_stones = params[:stones]
+    @session.current_max = 0
+    @session.reset = false
+    @session.accept_max_stones = [3, @session.initial_stones].min
+
+    unless @session.save
       respond_to do |format|
         format.html do
           flash[:alert] = "Please fix errors below."
-          @errors = player_a.errors.messages
+          @errors = @session.errors.messages
           render :new
         end
 
         format.json do
           render json: {
-            status: "failed",
-            reason: "Please fix errors below.",
-            errors: player_a.errors.messages
+              status: "failed",
+              reason: "Please fix errors below.",
+              errors: @session.errors.messages
           }.to_json
         end
       end
-      
+
       return
     end
-    
-    if !session.save
+
+    if params[:name].nil?
       respond_to do |format|
         format.html do
-          flash[:alert] = "Please fix errors below."
-          @errors = session.errors.messages
-          render :new
+          redirect_to @session, notice: "A new session has been created."
         end
 
         format.json do
           render json: {
-            status: "failed",
-            reason: "Please fix errors below.",
-            errors: session.errors.messages
+              status: "success",
+              game_status: @session.status,
+              session_id: @session.id
           }.to_json
         end
       end
-      
+
       return
     end
     
-    respond_to do |format|
-      format.html do
-        redirect_to session_status_path(session, token: player_a.token), notice: "A new session has been created."
-      end
-      
-      format.json do
-        render json: {
-          status: "success",
-          game_status: session.status,
-          session_id: session.id,
-          token: player_a.token
-        }.to_json
-      end
-    end
+    add_player
   end
   
   def join
@@ -88,7 +66,7 @@ class SessionsController < ApplicationController
   
   def join_post
     begin
-      session = Session.find(params[:id])
+      @session = Session.find(params[:id])
     rescue ActiveRecord::RecordNotFound => e
       respond_to do |format|
         format.html do
@@ -106,7 +84,7 @@ class SessionsController < ApplicationController
       return
     end
     
-    unless session.player_b.nil?
+    unless @session.player_a.nil? || @session.player_b.nil?
       respond_to do |format|
         format.html do
           redirect_to sessions_path, alert: "Player B already exists."
@@ -123,14 +101,25 @@ class SessionsController < ApplicationController
       return
     end
     
-    player_b = User.new
-    player_b.name = params[:name]
-    player_b.token = SecureRandom.hex(16)
-    player_b.left_resets = 4
-    player_b.left_time = 120
-    player_b.player_b_session = session
-    
-    if !player_b.save
+    add_player
+  end
+
+  def add_player
+    player = User.new
+    player.name = params[:name]
+    player.token = SecureRandom.hex(16)
+    player.left_resets = 4
+    player.left_time = 120
+
+    if @session.player_a.nil?
+      player.player_a_session = @session
+      player_a = true
+    else
+      player.player_b_session = @session
+      player_a = false
+    end
+
+    unless player.save
       respond_to do |format|
         format.html do
           flash[:alert] = "Please fix errors below."
@@ -140,32 +129,36 @@ class SessionsController < ApplicationController
 
         format.json do
           render json: {
-            status: "failed",
-            reason: "Please fix errors below.",
-            errors: player_b.errors.messages
+              status: "failed",
+              reason: "Please fix errors below.",
+              errors: player_b.errors.messages
           }.to_json
         end
       end
-      
+
       return
     end
-    
-    session.status = "wait_for_a_move"
-    
-    session.save
-    
+
+    if player_a
+      @session.status = "wait_for_b_join"
+    else
+      @session.status = "wait_for_a_move"
+    end
+
+    @session.save
+
     respond_to do |format|
       format.html do
-        redirect_to session_status_path(session, token: player_b.token), notice: "You have joined this session."
+        redirect_to session_status_path(@session, token: player.token), notice: "You have joined this session."
       end
-      
+
       format.json do
         render json: {
-          status: "success",
-          game_status: session.status,
-          session_id: session.id,
-          token: player_b.token,
-          init_stones: session.initial_stones
+            status: "success",
+            game_status: @session.status,
+            session_id: @session.id,
+            token: player.token,
+            init_stones: @session.initial_stones
         }.to_json
       end
     end
